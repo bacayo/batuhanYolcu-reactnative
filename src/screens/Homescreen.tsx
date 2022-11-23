@@ -18,12 +18,19 @@ const Homescreen = () => {
   const { products } = useSelector((state: RootState) => state.productSlice);
   const { categories } = useSelector((state: RootState) => state.categorySlice);
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const [selectedCategory, setSelecetedCategory] = useState('');
 
   //* render products
   const renderProducts: ListRenderItem<Products> = ({ item }) => <ProductCard product={item} />;
 
   //* render categories
-  const renderCategories = ({ item }: any) => <CategoryCard category={item} />;
+  const renderCategories = ({ item }: any) => (
+    <CategoryCard
+      category={item}
+      selectedCategory={selectedCategory}
+      setSelecetedCategory={setSelecetedCategory}
+    />
+  );
 
   //* navigate create screen
   const handleNav = () => {
@@ -59,7 +66,7 @@ const Homescreen = () => {
           />
         )}
       />
-      <FAB icon="plus" label="Add Product" onPress={handleNav} style={styles.fabStyle} />
+      <FAB color="black" icon="plus" onPress={handleNav} style={styles.fabStyle} />
     </View>
   );
 };
@@ -78,14 +85,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   titleContainerOnClick: {
-    padding: 4,
+    padding: 8,
     margin: 4,
     borderRadius: 5,
     backgroundColor: 'white',
-    borderColor: 'black',
-    height: 50,
+    height: 40,
     justifyContent: 'center',
-    borderWidth: 2,
   },
   title: {
     color: 'white',
@@ -101,6 +106,10 @@ const styles = StyleSheet.create({
     bottom: 16,
     right: 16,
     position: 'absolute',
+    backgroundColor: 'white',
+    borderWidth: 2,
+    borderColor: 'black',
+    borderRadius: 100 / 2,
   },
 });
 

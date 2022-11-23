@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
 
-import { ProductCardProps } from '../types/types';
+import { IProduct } from '../types/types';
 
-const ProductDetailCard = ({ product }: ProductCardProps) => {
+const ProductDetailCard: React.FC<IProduct> = ({ product }) => {
   return (
     <View style={styles.container}>
       <View style={styles.top}>

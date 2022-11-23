@@ -19,7 +19,7 @@ const Router = () => {
           name="Create"
           component={Createscreen}
           options={{
-            headerShown: false,
+            headerShown: true,
           }}
         />
       </Stack.Navigator>

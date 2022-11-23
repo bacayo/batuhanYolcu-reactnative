@@ -6,20 +6,12 @@ export type RootStackParamList = {
   Create: undefined;
 };
 
-export type ProductCardProps = {
+export interface IProduct {
   product: {
-    avatar: string;
-    name: string;
-    price: number;
-    _id: string;
-    description: string;
+    avatar: string | undefined;
+    name: string | undefined;
+    price: number | undefined;
+    _id: string | undefined;
+    description: string | undefined;
   };
-};
-
-export interface ProductType {
-  name: string;
-  avatar: string;
-  price: number;
-  _id: string;
-  desc: string;
 }

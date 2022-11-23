@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
+import { useRoute } from '@react-navigation/native';
+import React from 'react';
 import { Text, StyleSheet, Pressable } from 'react-native';
+
+import { filterProducts } from '../redux/slices/productSlice';
+import { useAppDispatch } from '../redux/store';
 
 // import { getCategoriesByIdAsync } from '../api';
 // import { useAppDispatch } from '../redux/store';
@@ -9,25 +13,28 @@ interface CategoryInterface {
     name: string;
     _id: string;
   };
+  selectedCategory: string;
+  setSelecetedCategory: any;
 }
 
-const CategoryCard = ({ category }: CategoryInterface) => {
-  // const dispatch = useAppDispatch();
-
-  const [cat, setCat] = useState({
-    clicked: false,
-    name: '',
-  });
+const CategoryCard = ({ category, selectedCategory, setSelecetedCategory }: CategoryInterface) => {
+  const dispatch = useAppDispatch();
+  const route = useRoute();
 
   const handleCatId = () => {
-    setCat({ clicked: !cat.clicked, name: category.name });
+    setSelecetedCategory(category.name);
+    if (route.name === 'Home') {
+      dispatch(filterProducts(category));
+    }
   };
 
   return (
     <Pressable
       onPress={handleCatId}
-      style={cat.clicked ? styles.containerOnClick : styles.container}>
-      <Text style={cat.clicked ? styles.titleOnClick : styles.title}>{category.name}</Text>
+      style={selectedCategory === category.name ? styles.container : styles.containerOnClick}>
+      <Text style={selectedCategory === category.name ? styles.title : styles.titleOnClick}>
+        {category.name}
+      </Text>
     </Pressable>
   );
 };
@@ -36,30 +43,30 @@ const styles = StyleSheet.create({
   container: {
     padding: 8,
     margin: 4,
-    borderRadius: 5,
+    borderRadius: 10,
     backgroundColor: 'black',
     height: 40,
     justifyContent: 'center',
   },
   containerOnClick: {
-    padding: 4,
+    padding: 8,
     margin: 4,
-    borderRadius: 5,
+    borderRadius: 10,
     backgroundColor: 'white',
-    borderColor: 'black',
-    height: 50,
+    height: 40,
     justifyContent: 'center',
+    borderColor: 'black',
     borderWidth: 2,
   },
   title: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 14,
   },
   titleOnClick: {
     color: 'black',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 14,
   },
 });
 

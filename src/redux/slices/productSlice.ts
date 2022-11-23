@@ -1,6 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { getProductsAsync, getProductByIdAsync } from '../../api';
+import { getProductsAsync, getProductByIdAsync, createProductsAsync } from '../../api';
+import { IProduct } from '../../types/types';
 
 export type Products = {
   avatar: string;
@@ -8,13 +9,14 @@ export type Products = {
   name: string;
   _id: string;
   description: string;
+  category: string;
 };
 
 export interface ProductState {
   isLoading: boolean;
   error: string | undefined;
   products: Products[];
-  product: Products[];
+  product: IProduct;
   message: string | undefined;
 }
 
@@ -22,7 +24,15 @@ const initialState: ProductState = {
   isLoading: false,
   error: undefined,
   products: [],
-  product: [],
+  product: {
+    product: {
+      price: undefined,
+      _id: undefined,
+      avatar: undefined,
+      description: undefined,
+      name: undefined,
+    },
+  },
   message: undefined,
 };
 
@@ -31,7 +41,19 @@ export const productSlice = createSlice({
   initialState,
   reducers: {
     resetProduct: (state) => {
-      state.product = [];
+      state.product = {
+        product: {
+          price: undefined,
+          _id: undefined,
+          avatar: undefined,
+          description: undefined,
+          name: undefined,
+        },
+      };
+    },
+    filterProducts: (state, action) => {
+      state.products = state.products.filter((product) => product.category === action.payload.name);
+      console.log(state.products);
     },
   },
   extraReducers(builder) {
@@ -50,16 +72,19 @@ export const productSlice = createSlice({
     builder.addCase(getProductByIdAsync.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(getProductByIdAsync.fulfilled, (state, action) => {
+    builder.addCase(getProductByIdAsync.fulfilled, (state, action: PayloadAction<IProduct>) => {
       state.isLoading = false;
-      state.product = action.payload.product;
+      state.product = action.payload;
       console.log(action.payload);
     });
     builder.addCase(getProductByIdAsync.rejected, (state, action) => {
       state.error = action.error.message;
     });
+    builder.addCase(createProductsAsync.fulfilled, (state, action) => {
+      state.products.unshift(action.payload.product);
+    });
   },
 });
 
 export default productSlice.reducer;
-export const { resetProduct } = productSlice.actions;
+export const { resetProduct, filterProducts } = productSlice.actions;

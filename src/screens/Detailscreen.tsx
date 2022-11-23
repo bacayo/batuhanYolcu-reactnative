@@ -27,7 +27,7 @@ const Detailscreen = (props: Props) => {
 
   return (
     <View style={styles.container}>
-      <ProductDetailCard product={product} />
+      <ProductDetailCard product={product.product} />
     </View>
   );
 };

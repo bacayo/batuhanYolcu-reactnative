@@ -5,9 +5,11 @@ type Props = {
   title: string;
   numOfLines?: number;
   multiline?: boolean;
+  value: string;
+  onChangeText: (text: string) => void;
 };
 
-const InputCard = ({ title, numOfLines, multiline }: Props) => {
+const InputCard = ({ title, numOfLines, multiline, value, onChangeText }: Props) => {
   return (
     <View style={styles.container}>
       <Text>{title}</Text>
@@ -16,6 +18,8 @@ const InputCard = ({ title, numOfLines, multiline }: Props) => {
         multiline={multiline}
         placeholder={title}
         numberOfLines={numOfLines}
+        value={value}
+        onChangeText={onChangeText}
       />
     </View>
   );
